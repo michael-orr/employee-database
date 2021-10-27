@@ -12,6 +12,9 @@ const db = mysql.createConnection(
     console.log(`Connected to the employee_db database.`)
   );
 
+//----------------------------------------------------------------------------------
+//Start function - COMPLETE
+
   async function start() {
     try {
       const rendered = await art.font("Employee Manager", "doom").completed();
@@ -22,6 +25,8 @@ const db = mysql.createConnection(
     }
   }
 
+//----------------------------------------------------------------------------------
+// menu prompt function - COMPLETE
   async function menu() {
     const { action } = await inquirer.prompt([
       {
@@ -59,12 +64,17 @@ const db = mysql.createConnection(
     }
   }
 
+//----------------------------------------------------------------------------------
+// view employees function - COMPLETE
+
   function viewEmployees() {
     db.query('SELECT * FROM employee', function (err, results) {
       console.table(results);
       menu();
     }); 
   }
+//----------------------------------------------------------------------------------
+// view roles function - COMPLETE
 
   function viewRoles() {
     db.query('SELECT * FROM role', function (err, results) {
@@ -72,16 +82,25 @@ const db = mysql.createConnection(
       menu();
     }); 
   }
+
+  //view departments function - COMPLETE
   function viewDepartments() {
     db.query('SELECT * FROM department', function (err, results) {
       console.table(results);
       menu();
     }); 
   }
+
+//----------------------------------------------------------------------------------
+// update the employee - not complete
+// use the field tips update function as an example.
   function updateEmployeeRole() {
     console.log('You chose Update Employee.');
     menu();
   }
+
+//----------------------------------------------------------------------------------
+// add department function - COMPLETE
   async function addDepartment() {
     try{
     const { department } = await inquirer.prompt([
@@ -102,6 +121,9 @@ const db = mysql.createConnection(
     console.log(error);
   }  
  }
+ //----------------------------------------------------------------------------------
+ // add role function - not complete
+
  async function addRole() {
   try{
   const { role } = await inquirer.prompt([
@@ -122,6 +144,9 @@ const db = mysql.createConnection(
   console.log(error);
 }  
 }
+//----------------------------------------------------------------------------------
+// add employee function - not complete
+
 async function addEmployee() {
   try{
   const { department } = await inquirer.prompt([
@@ -135,9 +160,14 @@ async function addEmployee() {
       message: "What is the employees last name?",
       first_name: "last_name",
     },
+    {
+      type: "list",
+      message: "Which department is the employee assigned to?",
+      department: "department_id",
+    },
   ]);
-  db.query(`INSERT INTO department (name) VALUES (?);`, department, function (err, results) {
-    console.log(`The ${department} Department has been successfully added.`);
+  db.query(`INSERT INTO role (name) VALUES (?);`, department, function (err, results) {
+    console.log(`The ${role} Department has been successfully added.`);
   }); 
   db.query('SELECT * FROM department', function (err, results) {
     console.table(results);
@@ -147,9 +177,12 @@ async function addEmployee() {
   console.log(error);
 }  
 }
+//----------------------------------------------------------------------------------
+// exit function - COMPLETE
   function exit() {
     console.log('see ya!');
     db.end();
   }
 
+  //STARTS THE APP.
   start();
