@@ -68,7 +68,7 @@ const db = mysql.createConnection(
 // view employees function - COMPLETE
 
   function viewEmployees() {
-    db.query('SELECT * FROM employee', function (err, results) {
+    db.query('SELECT * FROM employee JOIN role ON employee.role_id = role.id', function (err, results) {
       console.table(results);
       menu();
     }); 
@@ -77,7 +77,7 @@ const db = mysql.createConnection(
 // view roles function - COMPLETE
 
   function viewRoles() {
-    db.query('SELECT * FROM role', function (err, results) {
+    db.query('SELECT * FROM role JOIN department ON role.department_id = department.id', function (err, results) {
       console.table(results);
       menu();
     }); 
