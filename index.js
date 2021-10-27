@@ -12,9 +12,7 @@ const db = mysql.createConnection(
     console.log(`Connected to the employee_db database.`)
   );
 
-//----------------------------------------------------------------------------------
-//Start function - COMPLETE
-
+// Funtion to start the program.
   async function start() {
     try {
       const rendered = await art.font("Employee Manager", "doom").completed();
@@ -25,8 +23,8 @@ const db = mysql.createConnection(
     }
   }
 
-//----------------------------------------------------------------------------------
-// menu prompt function - COMPLETE
+
+// Menu prompt
   async function menu() {
     const { action } = await inquirer.prompt([
       {
@@ -64,8 +62,8 @@ const db = mysql.createConnection(
     }
   }
 
-//----------------------------------------------------------------------------------
-// view employees function - COMPLETE
+
+// view employees function
 
   function viewEmployees() {
     db.query('SELECT * FROM employee JOIN role ON employee.role_id = role.id', function (err, results) {
@@ -73,8 +71,8 @@ const db = mysql.createConnection(
       menu();
     }); 
   }
-//----------------------------------------------------------------------------------
-// view roles function - COMPLETE
+
+// view roles function
 
   function viewRoles() {
     db.query('SELECT * FROM role JOIN department ON role.department_id = department.id', function (err, results) {
@@ -83,7 +81,7 @@ const db = mysql.createConnection(
     }); 
   }
 
-  //view departments function - COMPLETE
+  //view departments function 
   function viewDepartments() {
     db.query('SELECT * FROM department', function (err, results) {
       console.table(results);
@@ -91,9 +89,9 @@ const db = mysql.createConnection(
     }); 
   }
 
-//----------------------------------------------------------------------------------
-// update the employee - not complete
-// use the field tips update function as an example.
+
+// update the employee function
+
   async function updateEmployeeRole() {
     try {
     const selectEmployeesSQL = 'SELECT * FROM employee;';
@@ -143,8 +141,7 @@ const db = mysql.createConnection(
   }  
   }
 
-//----------------------------------------------------------------------------------
-// add department function - COMPLETE
+// add department function
 
   async function addDepartment() {
     try{
@@ -167,8 +164,8 @@ const db = mysql.createConnection(
   }  
  }
 
- //----------------------------------------------------------------------------------
- // add role function - COMPLETE
+ 
+ // add role function
 
  async function addRole() {
   try{
@@ -212,8 +209,8 @@ const db = mysql.createConnection(
   console.log(error);
 }  
 }
-//----------------------------------------------------------------------------------
-// add employee function - COMPLETE
+
+// add employee function
 
 async function addEmployee() {
   try{
@@ -272,12 +269,12 @@ async function addEmployee() {
   console.log(error);
 }  
 }
-//----------------------------------------------------------------------------------
-// exit function - COMPLETE
+
+// exit function
   function exit() {
     console.log('see ya!');
     db.end();
   }
 
-  //STARTS THE APP.
+
   start();
