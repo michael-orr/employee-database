@@ -15,6 +15,7 @@
     <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#built-with">Built With</a></li>
     <li><a href="#installation">Installation</a></li>
+    <li><a href="#preview">Preview</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
   </ol>
@@ -33,6 +34,11 @@
   ## Installation
   This is a command line tool. Feel free to clone a git from https://github.com/michael-orr/employee-database.
   <p align="right">(<a href="#top">back to top</a>)</p>
+
+  ## Preview
+  This is a preview of the start page:
+ ![This is a preview of the start page.](./assets/screenshot.PNG)
+
 
   ## Contributing
   Feel free to contribute.  You can clone a git repo at https://github.com/michael-orr/employee-database
