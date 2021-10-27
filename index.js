@@ -124,8 +124,8 @@ const db = mysql.createConnection(
  }
 
  //----------------------------------------------------------------------------------
- // add role function - not complete
-
+ // add role function - COMPLETE
+ 
  async function addRole() {
   try{
   const selectDepartmentsSQL = 'SELECT * FROM department;';
@@ -134,10 +134,10 @@ const db = mysql.createConnection(
 
   const choices = rows.map((department) => ({
     name: `${department.name}`,
-    value: department,
+    value: department.id,
   }));
 
-  const { title, salary, department } = await inquirer.prompt([
+  const role = await inquirer.prompt([
     {
       type: "input",
       message: "What would you like to name this role?",
@@ -151,14 +151,16 @@ const db = mysql.createConnection(
     {
       type: "list",
       message: "Which department will this role belong to?",
-      name: "department",
+      name: "department_id",
       choices: choices
     },
   ]);
-  db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`, [title,salary,department], function (err, results) {
-    console.log(`${title} has been successfully added.`);
+  db.query("INSERT INTO role SET ?", role, function (err, results) {
+    if (err) {console.log("err adding a role: ", err)}; 
+    console.log(role);
+    console.log(`${role.title} has been successfully added.`);
   }); 
-  db.query('SELECT * FROM role', function (err, results) {
+  db.query('SELECT * FROM role;', function (err, results) {
     console.table(results);
     menu();
   });
