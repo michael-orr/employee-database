@@ -101,6 +101,7 @@ const db = mysql.createConnection(
 
 //----------------------------------------------------------------------------------
 // add department function - COMPLETE
+
   async function addDepartment() {
     try{
     const { department } = await inquirer.prompt([
@@ -121,22 +122,43 @@ const db = mysql.createConnection(
     console.log(error);
   }  
  }
+
  //----------------------------------------------------------------------------------
  // add role function - not complete
 
  async function addRole() {
   try{
-  const { role } = await inquirer.prompt([
+  const selectDepartmentsSQL = 'SELECT * FROM department;';
+
+  const [rows] = await db.promise().query(selectDepartmentsSQL);
+
+  const choices = rows.map((department) => ({
+    name: `${department.name}`,
+    value: department,
+  }));
+
+  const { title, salary, department } = await inquirer.prompt([
     {
       type: "input",
       message: "What would you like to name this role?",
-      name: "role",
+      name: "title",
+    },
+    {
+      type: "input",
+      message: "What is the starting salary?",
+      name: "salary",
+    },
+    {
+      type: "list",
+      message: "Which department will this role belong to?",
+      name: "department",
+      choices: choices
     },
   ]);
-  db.query(`INSERT INTO department (name) VALUES (?);`, role, function (err, results) {
-    console.log(`${role} has been successfully added.`);
+  db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`, [title,salary,department], function (err, results) {
+    console.log(`${title} has been successfully added.`);
   }); 
-  db.query('SELECT * FROM department', function (err, results) {
+  db.query('SELECT * FROM role', function (err, results) {
     console.table(results);
     menu();
   });
@@ -148,34 +170,8 @@ const db = mysql.createConnection(
 // add employee function - not complete
 
 async function addEmployee() {
-  try{
-  const { department } = await inquirer.prompt([
-    {
-      type: "input",
-      message: "What is the employees first name?",
-      first_name: "first_name",
-    },
-    {
-      type: "input",
-      message: "What is the employees last name?",
-      first_name: "last_name",
-    },
-    {
-      type: "list",
-      message: "Which department is the employee assigned to?",
-      department: "department_id",
-    },
-  ]);
-  db.query(`INSERT INTO role (name) VALUES (?);`, department, function (err, results) {
-    console.log(`The ${role} Department has been successfully added.`);
-  }); 
-  db.query('SELECT * FROM department', function (err, results) {
-    console.table(results);
-    menu();
-  });
-} catch (error) {
-  console.log(error);
-}  
+  console.log('You chose Add Employee.');
+  menu();  
 }
 //----------------------------------------------------------------------------------
 // exit function - COMPLETE
