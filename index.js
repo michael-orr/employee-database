@@ -94,9 +94,53 @@ const db = mysql.createConnection(
 //----------------------------------------------------------------------------------
 // update the employee - not complete
 // use the field tips update function as an example.
-  function updateEmployeeRole() {
-    console.log('You chose Update Employee.');
+  async function updateEmployeeRole() {
+    try {
+    const selectEmployeesSQL = 'SELECT * FROM employee;';
+
+    const [rows] = await db.promise().query(selectEmployeesSQL);
+
+    const choices = rows.map((employee) => ({
+      name: `${employee.first_name} ${employee.last_name}`,
+      value: employee.id,
+    }));
+
+  const selectRolesSQL = 'SELECT * FROM role;';
+
+  const [roleRows] = await db.promise().query(selectRolesSQL);
+
+  const roleChoices = roleRows.map((role) => ({
+    name: `${role.title}`,
+    value: role.id,
+  }));
+
+    const employee = await inquirer.prompt([
+      {
+        type: "list",
+        message: "Which employee would you like to update?",
+        name: "employee_id",
+        choices: choices,
+      },
+    ]);
+    const role = await inquirer.prompt([
+      {
+        type: "list",
+        message: "What is the employee's new role?",
+        name: "role_id",
+        choices: roleChoices,
+      },
+    ]);
+    const updateEmployeeRoleSql = `UPDATE employee SET ? WHERE ?;`;
+    await db
+      .promise()
+      .query(updateEmployeeRoleSql, [
+        { role_id: role.role_id },
+        { id: employee.employee_id },
+      ]);
     menu();
+  } catch (error) {
+    console.log(error);
+  }  
   }
 
 //----------------------------------------------------------------------------------
@@ -169,7 +213,7 @@ const db = mysql.createConnection(
 }  
 }
 //----------------------------------------------------------------------------------
-// add employee function - not complete
+// add employee function - COMPLETE
 
 async function addEmployee() {
   try{
