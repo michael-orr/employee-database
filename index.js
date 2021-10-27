@@ -125,7 +125,7 @@ const db = mysql.createConnection(
 
  //----------------------------------------------------------------------------------
  // add role function - COMPLETE
- 
+
  async function addRole() {
   try{
   const selectDepartmentsSQL = 'SELECT * FROM department;';
@@ -172,8 +172,61 @@ const db = mysql.createConnection(
 // add employee function - not complete
 
 async function addEmployee() {
-  console.log('You chose Add Employee.');
-  menu();  
+  try{
+  const selectRolesSQL = 'SELECT * FROM role;';
+
+  const [roleRows] = await db.promise().query(selectRolesSQL);
+
+  const roleChoices = roleRows.map((role) => ({
+    name: `${role.title}`,
+    value: role.id,
+  }));
+
+  const selectManagersSQL = 'SELECT * FROM employee;';
+
+  const [managerRows] = await db.promise().query(selectManagersSQL);
+
+  const managerChoices = managerRows.map((manager) => ({
+    name: `${manager.first_name} ${manager.last_name}`,
+    value: manager.id,
+  }));
+
+  const employee = await inquirer.prompt([
+    {
+      type: "input",
+      message: "Employee's first name:",
+      name: "first_name",
+    },
+    {
+      type: "input",
+      message: "Employee's last name:",
+      name: "last_name",
+    },
+    {
+      type: "list",
+      message: "For which role was this employee hired?",
+      name: "role_id",
+      choices: roleChoices,
+    },
+    {
+      type: "list",
+      message: "Which department will this role belong to?",
+      name: "manager_id",
+      choices: managerChoices,
+    },
+  ]);
+  db.query("INSERT INTO employee SET ?", employee, function (err, results) {
+    if (err) {console.log("err adding a role: ", err)}; 
+    console.log(employee);
+    console.log(`${employee.first_name} ${employee.last_name} has been successfully added.`);
+  }); 
+  db.query('SELECT * FROM employee;', function (err, results) {
+    console.table(results);
+    menu();
+  });
+} catch (error) {
+  console.log(error);
+}  
 }
 //----------------------------------------------------------------------------------
 // exit function - COMPLETE
