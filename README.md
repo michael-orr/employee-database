@@ -45,10 +45,7 @@
   <p align="right">(<a href="#top">back to top</a>)</p>
 
   ## License
-  MIT 
-  
-  
-MIT License
+  MIT - https://opensource.org/licenses/MIT
 
 Copyright (c) 2021 Michael Orr
 
